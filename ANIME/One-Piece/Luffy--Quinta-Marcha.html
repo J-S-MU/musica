@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../../jose.ico" type="jose.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolher Servidor Baixar a musica</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8906506021952813"
+        crossorigin="anonymous"></script>
+
+    <!-- Link para o Font Awesome (para os ícones de redes sociais) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Estilos do corpo */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298); /* Gradiente de azul escuro */
+            color: #fff; /* Cor do texto branca para melhor contraste */
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        /* Título */
+        h1 {
+            color: #fff;
+            margin-top: 30px;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+
+        /* Botões de servidor */
+        .server-btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #6DD5FA, #2980B9);
+            color: white;
+            border: none;
+            transition: background 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .server-btn:hover {
+            background: linear-gradient(135deg, #6DD5FA, #1c648c);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Barra de progresso */
+        .progress-container {
+            width: 80%;
+            background-color: #333; /* Cinza escuro para a barra de fundo */
+            border-radius: 25px;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 30px;
+            width: 0;
+            background-color: #6DD5FA;
+            border-radius: 25px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+            transition: width 0.3s;
+        }
+
+        /* Mensagem e link de redirecionamento */
+        .message {
+            font-size: 18px;
+            color: #fff;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .link-liberado {
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Estilo do botão de "Clique aqui para acessar" */
+        .link-liberado a {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #34D399, #10B981); /* Gradiente de verde */
+            color: #fff;
+            border-radius: 50px; /* Borda mais arredondada */
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra para profundidade */
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        /* Efeito ao passar o mouse no botão */
+        .link-liberado a:hover {
+            background: linear-gradient(135deg, #10B981, #059669); /* Gradiente mais escuro no hover */
+            transform: scale(1.05); /* Efeito de "zoom" */
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada */
+        }
+
+        /* Redes sociais no rodapé */
+        .social-icons {
+            margin-top: 50px;
+            padding: 10px;
+            color: white;
+        }
+
+        .social-icons a {
+            color: white;
+            margin: 0 15px;
+            font-size: 24px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #6DD5FA;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Escolher Servidor Baixar a musica</h1>
+    <h2>Luffy - Quinta Marcha</h2>
+
+    <!-- Botões para os quatro servidores -->
+    <button class="server-btn" onclick="escolherServidor(1)">GOOGLE DRIVE</button>
+    <button class="server-btn" onclick="escolherServidor(2)">MEDIAFIRE</button>
+    <button class="server-btn" onclick="escolherServidor(3)">TERABOX</button>
+    <button class="server-btn" onclick="escolherServidor(4)">MEGA</button>
+
+    <!-- Barra de progresso -->
+    <div class="progress-container">
+        <div id="progress-bar" class="progress-bar">0%</div>
+    </div>
+
+    <!-- Mensagem de espera -->
+    <div class="message" id="message"></div>
+
+    <!-- Link liberado -->
+    <div class="link-liberado" id="link-liberado"></div>
+
+    <script>
+        let intervaloProgresso;  // Variável para controlar o intervalo
+        let redirecionarTimeout; // Variável para controlar o redirecionamento
+
+        function escolherServidor(servidor) {
+            // Parar qualquer progresso anterior
+            if (intervaloProgresso) {
+                clearInterval(intervaloProgresso);
+            }
+
+            // Resetar a barra de progresso e a mensagem
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-bar').innerText = '0%';
+            document.getElementById('link-liberado').style.display = 'none'; // Esconde o link anterior
+            document.getElementById('message').style.display = 'none'; // Esconde a mensagem anterior
+
+            // URL do servidor baseado na escolha
+            let url;
+            let nomeServidor;
+            switch (servidor) {
+                case 1:
+                    url = "https://drive.google.com/file/d/1L2wMY7hNBuYd8Rd2faUrYkZ879KGauep/view?usp=drive_link";
+                    nomeServidor = "Google Drive";
+                    break;
+                case 2:
+                    url = "https://www.mediafire.com/file/z43wpfwej9qdttl/Luffy_-_Quinta_Marcha.mp3/file";
+                    nomeServidor = "MediaFire";
+                    break;
+                case 3:
+                    url = "https://terabox.com/s/17_wElEt3cJ5wgGQLAGb2Yw";
+                    nomeServidor = "TeraBox";
+                    break;
+                case 4:
+                    url = "https://mega.nz/file/frIGCTjI#35jR2ioRr8k9sPYuvB5lpQhfotw1JVTmwh9h-APLgEA";
+                    nomeServidor = "MEGA";
+                    break;
+                default:
+                    url = "#";
+                    nomeServidor = "desconhecido";
+            }
+
+            // Mostrar barra de progresso e mensagem
+            document.getElementById('message').innerText = "Aguarde 10 segundos para baixar a música no " + nomeServidor + "...";
+            document.getElementById('message').style.display = 'block';
+            document.querySelector('.progress-container').style.display = 'block';
+
+            // Atualizar a barra de progresso
+            let progressBar = document.getElementById('progress-bar');
+            let width = 0;
+            intervaloProgresso = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(intervaloProgresso);
+                    // Exibir o link após a espera
+                    document.getElementById('message').innerText = "Seu link foi liberado!";
+                    document.getElementById('link-liberado').innerHTML = `<a href="${url}" target="_blank">Clique aqui para baixar a música no ${nomeServidor}</a>`;
+                    document.getElementById('link-liberado').style.display = 'block';
+                } else {
+                    width += 10; // Aumenta a barra de progresso em 10%
+                    progressBar.style.width = width + '%';
+                    progressBar.innerText = width + '%';
+                }
+            }, 1000); // Aumenta a barra de progresso a cada 1 segundo (10 passos em 10 segundos)
+        }
+
+        // Função para redirecionar após 1 minutos
+        function iniciarRedirecionamento() {
+            // Limpar o timeout anterior se existir
+            if (redirecionarTimeout) {
+                clearTimeout(redirecionarTimeout);
+            }
+
+            // Definir um novo timeout para redirecionar após 1 minutos
+            redirecionarTimeout = setTimeout(function() {
+                window.location.href = 'https://heylink.me/Jose-Status-Musica/'; // Redirecionar para a página inicial
+            }, 60000); // 1 minutos em milissegundos
+        }
+
+        // Iniciar o redirecionamento assim que a página carregar
+        window.onload = iniciarRedirecionamento;
+
+        // Resetar o redirecionamento se o usuário interagir com a página
+        document.addEventListener('mousemove', iniciarRedirecionamento);
+        document.addEventListener('keydown', iniciarRedirecionamento);
+    </script>
+
+</body>
+
+<body>
+    <div>
+        <!-- Exemplo de inclusão do rodapé com JavaScript -->
+        <script>
+            fetch('../../footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.body.insertAdjacentHTML('beforeend', data);
+                });
+        </script>
+    </div>
+</body>
+
+</html>
